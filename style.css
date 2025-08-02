@@ -2,23 +2,37 @@
     --clr-invalid: hsl(13.5,81%,32.1%);
     --clr-valid: #10a510;
     --clr-normal: #eff2ce;
-    --clr-sec-accent: #dffab7;
-    --clr-transparent: rgba(0 0 0 / 0.3);
+    --clr-sec-accent: #e4ede5;
+    --clr-pri-accent: #052d0a;
+    --clr-transparent: rgba(0 0 0 / 0.25);
+    --clr-text: #666;
     
     --md-dim: 50px;
     --fs-xsm: 0.8rem;
     --fs-sm: 1rem;
     --fs-md: 1.5rem;
     --fs-lg: 2rem;
+    
+    --container-width: 600px;
+    --sm-gap: 20px;
+    
+    --box-shadow-transparent: 0 0 5px var(--clr-transparent);
   }
-  
+  *,*::before,*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
   body{
     font-size: clamp(var(--fs-xsm), var(--fs-xsm) + 0.3vw, var(--fs-sm));
   }
+  .container{
+    width: min(95%, var(--container-width));
+    margin: 0 auto 0;
+    display: grid;
+  }
 
     input {
-      border-radius: 3px;
-
       &: where(: invalid,: valid) {
         border: 2px solid;
       }
@@ -32,7 +46,7 @@
 
       &.empty {
         border: none;
-        box-shadow: 0 0 5px var(--clr-transparent);
+        box-shadow: var(--box-shadow-transparent);
       }
     }
   :focus {
@@ -40,18 +54,15 @@
     }
 
     #postal-code-message.invalid {
-      background: var(--clr-invalid);
-      color: #ccc;
+      color: var(--clr-invalid);
     }
 
     #postal-code-message.valid {
-      background: var(--clr-valid);
-      color: #333;
+      color: var(--clr-valid);
     }
 
     #postal-code-message.void {
-      background: var(--clr-transparent);
-      color: #333;
+     color: var(--clr-invalid);
     }
     
     .heading{
@@ -60,10 +71,47 @@
       justify-content: center;
       height: var(--md-dim);
       background: var(--clr-sec-accent);
-      font-size: clamp(var(--fs-md), var(--fs-md) + 1vw, var(--fs-lg));
+      font-size: clamp(var(--fs-sm), var(--fs-sm) + 1vw, var(--fs-md));
+      color: var(--clr-pri-accent);
     }
     
     form{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(calc(var(--container-width) / 2 - var(--sm-gap)), 1fr));
+      gap: var(--sm-gap);
+    color: var(--clr-text);
+    }
+    
+    form > div{
       display: flex;
-      width: 100%;
+      gap: 15px;
+      flex-direction: column;
+    }
+    select{
+     border: 2px solid var(--clr-transparent);
+    }
+    input, select{
+      height: 50px;
+    }
+    input{
+      border-radius: 3px;
+      border-radius: 5px;
+      padding-left: 10px;
+      &::placeholder{
+        color: var(--clr-transparent);
+      }
+    }
+    
+    .email{
+      grid-column: 1/-1;
+    }
+    .postal-code{
+      position: relative;
+    }
+    #postal-code-message{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      transform: translateY(100%);
     }
