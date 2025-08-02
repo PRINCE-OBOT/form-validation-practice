@@ -5,7 +5,7 @@
     --clr-sec-accent: #e4ede5;
     --clr-pri-accent: #052d0a;
     --clr-transparent: rgba(0 0 0 / 0.25);
-    --clr-text: #666;
+    --clr-text: #333;
     
     --md-dim: 50px;
     --fs-xsm: 0.8rem;
@@ -30,10 +30,14 @@
     width: min(95%, var(--container-width));
     margin: 0 auto 0;
     display: grid;
+    height: calc-size(max-content, size + 100px);
   }
 
     input {
-      &: where(: invalid,: valid) {
+       &[type].empty {
+        border-color: var(--clr-transparent);;
+      }
+      &:where(: invalid,: valid) {
         border: 2px solid;
       }
       &:invalid {
@@ -42,11 +46,6 @@
 
       &:valid {
         border-color: var(--clr-valid);
-      }
-
-      &.empty {
-        border: none;
-        box-shadow: var(--box-shadow-transparent);
       }
     }
   :focus {
@@ -77,9 +76,10 @@
     
     form{
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(calc(var(--container-width) / 2 - var(--sm-gap)), 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(calc(var(--container-width) / 2.2 - var(--sm-gap)), 1fr));
       gap: var(--sm-gap);
     color: var(--clr-text);
+    padding: 10px;
     }
     
     form > div{
@@ -92,11 +92,11 @@
     }
     input, select{
       height: 50px;
+      padding-left: 10px;
     }
     input{
       border-radius: 3px;
       border-radius: 5px;
-      padding-left: 10px;
       &::placeholder{
         color: var(--clr-transparent);
       }
@@ -108,10 +108,11 @@
     .postal-code{
       position: relative;
     }
-    #postal-code-message{
+    .show-message{
       position: absolute;
-      bottom: 0;
+      bottom: -2px;
       left: 0;
       right: 0;
       transform: translateY(100%);
+      font-size: var(--fs-xsm);
     }

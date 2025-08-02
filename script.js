@@ -1,6 +1,7 @@
  const country = document.querySelector('#country')
     const postalCode = document.querySelector('#postal-code')
     const postalCodeMessage = document.querySelector('#postal-code-message')
+    const password = document.querySelector('#password')
     const inputs = document.querySelectorAll('input')
 
     inputs.forEach(markInputAsEmpty)
@@ -12,6 +13,8 @@
     country.addEventListener('change', handleCountryPostalCode)
 
     postalCode.addEventListener('input', validatePostalCode)
+    
+    password.addEventListener('input', validatePassword)
 
     const countryPostalCode = {
       nigeria: ['^[0-9]{6}$',
@@ -25,7 +28,7 @@
       null: ['']
     }
 
-    let countryPostalCodepattern
+    let countryPostalCodepattern, countryPostalCodepatternRegExp
     function handleCountryPostalCode() {
       countryPostalCodepattern = countryPostalCode[country.value][0]
 
@@ -36,6 +39,8 @@
         postalCode.classList.add('empty')
         return
       }
+      
+     countryPostalCodepatternRegExp = new RegExp(countryPostalCodepattern)
 
       setCountryPatternToPostalCode()
       validatePostalCode()
@@ -52,13 +57,15 @@
         return
       }
       postalCode.classList.remove('empty')
+       
+       const isPostalCodeValid = countryPostalCodepatternRegExp.test(postalCode.value)
 
       let message,
       validityState
-      if (!postalCode.validity.valid) {
+      if (!postalCode.validity.valid && !isPostalCodeValid) {
         message = `Invalid Postal Code`
         validityState = 'invalid'
-      } else {
+      } else if (postalCode.validity.valid && isPostalCodeValid) {
         message = '✓'
         validityState = 'valid'
       }
@@ -69,5 +76,18 @@
       validityState = validityState === 'valid' ? 'invalid': 'valid'
 
       postalCodeMessage.classList.remove(validityState, 'void')
+    }
+    
+    function setPasswordPattern(){
+      const pattern = ''
+      
+      const constraints = ['one', 'two', 'three']
+      
+     
+    }
+    
+    function validatePassword(){
+      password.classList.remove('empty')
+     
     }
 
