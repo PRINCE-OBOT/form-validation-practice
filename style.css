@@ -1,0 +1,69 @@
+:root {
+    --clr-invalid: hsl(13.5,81%,32.1%);
+    --clr-valid: #10a510;
+    --clr-normal: #eff2ce;
+    --clr-sec-accent: #dffab7;
+    --clr-transparent: rgba(0 0 0 / 0.3);
+    
+    --md-dim: 50px;
+    --fs-xsm: 0.8rem;
+    --fs-sm: 1rem;
+    --fs-md: 1.5rem;
+    --fs-lg: 2rem;
+  }
+  
+  body{
+    font-size: clamp(var(--fs-xsm), var(--fs-xsm) + 0.3vw, var(--fs-sm));
+  }
+
+    input {
+      border-radius: 3px;
+
+      &: where(: invalid,: valid) {
+        border: 2px solid;
+      }
+      &:invalid {
+        border-color: var(--clr-invalid);
+      }
+
+      &:valid {
+        border-color: var(--clr-valid);
+      }
+
+      &.empty {
+        border: none;
+        box-shadow: 0 0 5px var(--clr-transparent);
+      }
+    }
+  :focus {
+      outline: none;
+    }
+
+    #postal-code-message.invalid {
+      background: var(--clr-invalid);
+      color: #ccc;
+    }
+
+    #postal-code-message.valid {
+      background: var(--clr-valid);
+      color: #333;
+    }
+
+    #postal-code-message.void {
+      background: var(--clr-transparent);
+      color: #333;
+    }
+    
+    .heading{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--md-dim);
+      background: var(--clr-sec-accent);
+      font-size: clamp(var(--fs-md), var(--fs-md) + 1vw, var(--fs-lg));
+    }
+    
+    form{
+      display: flex;
+      width: 100%;
+    }
