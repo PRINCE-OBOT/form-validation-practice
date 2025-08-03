@@ -26,7 +26,8 @@
     
     <div class="email">
       <label for="email">Email</label>
-      <input type="text" id="email" placeholder="Email">
+      <input type="email" id="email" placeholder="Email" pattern="^[a-zA-Z0-9]{4,}@(gmail|yahoo|hotmail).com$" required>
+      <output id="email-message"class="show-message"></output>
     </div>
     
     <div>
@@ -42,7 +43,7 @@
 
     <div class="postal-code">
       <label for="postal-code">Enter Country Postal Code</label>
-      <input type="text" id="postal-code" placeholder="Enter Country Postal Code" required>
+      <input type="text" id="postal-code" required>
       <output id="postal-code-message"class="show-message"></output>
     </div>
     

@@ -15,7 +15,7 @@
   --fs-lg: 2rem;
 
   --container-width: 610px;
-  --sm-gap: 20px;
+  --sm-gap: 5px;
 
   --box-shadow-transparent: 0 0 5px var(--clr-transparent);
 }
@@ -40,7 +40,7 @@ input {
   &[type].empty {
     border-color: var(--clr-transparent);
   }
-  &:where(:invalid,:valid) {
+  &:where(:invalid, :valid) {
     border: 2px solid;
   }
   &:invalid {
@@ -55,20 +55,20 @@ input {
   outline: none;
 }
 
-.show-message{
+.show-message {
   &.invalid {
     color: var(--clr-invalid);
   }
-  &.valid{
+  &.valid {
     color: var(--clr-valid);
   }
 }
 
-#confirm-password{
+#confirm-password {
   &.invalid {
     border-color: var(--clr-invalid);
   }
-  &.valid{
+  &.valid {
     border-color: var(--clr-valid);
   }
 }
@@ -89,14 +89,14 @@ form {
     auto-fit,
     minmax(calc(var(--container-width) / 2.2 - var(--sm-gap)), 1fr)
   );
-  gap: var(--sm-gap);
+  gap: 20px;
   color: var(--clr-text);
   padding: 10px;
 }
 
 form > div {
   display: flex;
-  gap: 20px;
+  gap: 8px;
   flex-direction: column;
   position: relative;
 }
