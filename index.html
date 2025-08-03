@@ -48,7 +48,8 @@
     
     <div class="password">
       <label for="password">Password</label>
-      <input type="text" id="password" placeholder="Password" required>
+      <input type="text" id="password" placeholder="Password" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{7,}$" required>
+      <output id="password-message" class="show-message"></output>
     </div>
     
     <div class="confirm-password">

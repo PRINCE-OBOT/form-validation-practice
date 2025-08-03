@@ -2,6 +2,7 @@
     const postalCode = document.querySelector('#postal-code')
     const postalCodeMessage = document.querySelector('#postal-code-message')
     const password = document.querySelector('#password')
+    const passwordMessage = document.querySelector('#password-message')
     const inputs = document.querySelectorAll('input')
 
     inputs.forEach(markInputAsEmpty)
@@ -78,16 +79,42 @@
       postalCodeMessage.classList.remove(validityState, 'void')
     }
     
-    function setPasswordPattern(){
-      const pattern = ''
-      
-      const constraints = ['one', 'two', 'three']
-      
-     
-    }
+   
     
     function validatePassword(){
-      password.classList.remove('empty')
-     
+     if(password.value !== ''){
+        password.classList.remove('empty')
+     }
+    
+    const lowercase = /[a-z]/.test(password.value)  
+    const uppercase = /[A-Z]/.test(password.value)  
+    const number = /[0-9]/.test(password.value)  
+    const minLength = /.{7,}/.test(password.value)
+    
+    passwordMessage.value = 'Password should contain'
+    
+    if(!lowercase){
+      passwordMessage.value += ', Lowercase'
     }
+    if(!uppercase){
+      passwordMessage.value += ', Uppercase'
+    }
+    if(!number){
+      passwordMessage.value += ', Number'
+    }
+    if(!minLength){
+      passwordMessage.value += ', Minimum of 7 characters'
+    }
+    
+  const isPasswordStrong = lowercase && uppercase && number && minLength
+  
+    if(isPasswordStrong && password.validity.valid){
+      passwordMessage.value = '✓'
+    }
+    
+    if(password.value === ''){
+      passwordMessage.value = ''
+    }  
+     
+  }
 
