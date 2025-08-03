@@ -1,14 +1,22 @@
 const country = document.querySelector("#country");
 const postalCode = document.querySelector("#postal-code");
 const postalCodeMessage = document.querySelector("#postal-code-message");
+
 const password = document.querySelector("#password");
-const confirmPassword = document.querySelector("#confirm-password");
 const passwordMessage = document.querySelector("#password-message");
+
+const confirmPassword = document.querySelector("#confirm-password");
+const confirmPasswordMessage = document.querySelector("#confirm-password-message");
+
 const email = document.querySelector("#email");
 const emailMessage = document.querySelector("#email-message");
-const confirmPasswordMessage = document.querySelector(
-  "#confirm-password-message"
-);
+
+const firstName = document.querySelector("#first-name");
+const firstNameMessage = document.querySelector("#first-name-message");
+
+const lastName = document.querySelector("#last-name");
+const lastNameMessage = document.querySelector("#last-name-message");
+
 const fields = document.querySelectorAll("input");
 
 fields.forEach(markInputAsEmpty);
@@ -26,6 +34,10 @@ password.addEventListener("input", validatePassword);
 confirmPassword.addEventListener("input", confirmPasswordToValidatePassword);
 
 email.addEventListener("input", validateEmail);
+
+firstName.addEventListener('input', ()=> validateName({name: firstName, nameMessage: firstNameMessage}))
+
+lastName.addEventListener('input', ()=> validateName({name: lastName, nameMessage: lastNameMessage}))
 
 const countryDetails = {
   nigeria: {
@@ -79,16 +91,13 @@ function setCountryDetailsToPostalCode() {
 setCountryDetailsToPostalCode()
 
 function validatePostalCode(e) {
-  if (postalCode.value === "") {
-    postalCodeMessage.textContent = "";
-    postalCode.classList.add("empty");
+  const isFieldEmpty = resetField({ field: postalCode, fieldMessage: postalCodeMessage})
+  if(isFieldEmpty) return
 
-    if (e) {
-      // Avoid selecting a country to call `handleCountryPostalCode` recursively
-      // Only run `handleCountryPostalCode` when the event is handled by `validatePostalCode` function
-      handleCountryPostalCode();
-    }
-    return;
+  if (e) {
+    // Avoid selecting a country to call `handleCountryPostalCode` recursively
+    // Only run `handleCountryPostalCode` when the event is handled by `validatePostalCode` function
+    handleCountryPostalCode();
   }
   if (countryDetailsProperty.pattern === "") {
     return;
@@ -100,26 +109,22 @@ function validatePostalCode(e) {
     postalCode.value
   );
 
-  let message, validityState;
-  if (!postalCode.validity.valid && !isPostalCodeValid) {
-    message = `Invalid Postal Code`;
-    validityState = "invalid";
-  } else if (postalCode.validity.valid && isPostalCodeValid) {
-    message = "✓";
-    validityState = "valid";
-  }
+  validateClientAndServerState({
+    field: postalCode,
+    isFieldValid: isPostalCodeValid,
+    fieldMessage: postalCodeMessage,
+    msg: "Invalid Postal Code",
+  });
 
-  postalCodeMessage.textContent = message;
-
-  colorMessage({ msgToColor: postalCodeMessage, validityState });
 }
 
-let isPasswordStrong;
+let isPasswordValid;
 
 function validatePassword() {
-  if (password.value !== "") {
-    password.classList.remove("empty");
-  }
+  removeClassEmpty({ field: password });
+
+  const isPasswordEmpty = resetField({ field: password, fieldMessage: passwordMessage });
+  if(isPasswordEmpty) return
 
   const lowercase = /[a-z]/.test(password.value);
   const uppercase = /[A-Z]/.test(password.value);
@@ -141,103 +146,125 @@ function validatePassword() {
     passwordMessage.value += ", Minimum of 7 characters";
   }
 
-  isPasswordStrong = lowercase && uppercase && number && minLength;
+  isPasswordValid = lowercase && uppercase && number && minLength;
 
-  let validityState;
-  if (isPasswordStrong && password.validity.valid) {
-    passwordMessage.value = "✓";
-    validityState = "valid";
-  } else if (!isPasswordStrong && !password.validity.valid) {
-    validityState = "invalid";
-  }
-
-  colorMessage({ msgToColor: passwordMessage, validityState });
+  validateClientAndServerState({field: password, isFieldValid: isPasswordValid, fieldMessage: passwordMessage})
 
   if (confirmPassword.value != "") {
     confirmPasswordToValidatePassword();
-  }
-
-  if (password.value === "") {
-    passwordMessage.value = "";
   }
 }
 
 function confirmPasswordToValidatePassword() {
   removeClassEmpty({ field: confirmPassword})
 
-  if (confirmPassword.value === "") {
-    confirmPasswordMessage.value = "";
-    confirmPassword.classList.remove("invalid", "valid");
+  const isConfirmPasswordEmpty = resetField({field: confirmPassword, fieldMessage: confirmPasswordMessage})
+  if(isConfirmPasswordEmpty) return
 
-    return;
-  }
-
-  if (!isPasswordStrong && !password.validity.valid) {
-    confirmPasswordMessage.value = "Your password is weak";
-    colorMessage({
-      msgToColor: confirmPasswordMessage,
-      validityState: "invalid",
-      field: confirmPassword,
-    });
-
-    return;
-  }
+  const isPasswordWeak = validateClientAndServerState({field: password, isFieldValid: isPasswordValid, fieldMessage: confirmPasswordMessage, field2: confirmPassword, msg: 'Your password is weak', isReturn: true})
+  if (isPasswordWeak) return;
 
   let validityState;
 
   if (password.value === confirmPassword.value) {
+    
     confirmPasswordMessage.value = "✓";
     validityState = "valid";
+
   } else if (password.value !== confirmPassword.value) {
+    
     validityState = "invalid";
     confirmPasswordMessage.value = "Password Mismatch";
+
   }
 
-  colorMessage({
-    msgToColor: confirmPasswordMessage,
-    validityState,
-    field: confirmPassword,
-  });
+  colorMessage({msgToColor: confirmPasswordMessage,validityState,field: confirmPassword});
 }
 
 function validateEmail() {
   removeClassEmpty({ field: email})
+  
+  const isEmailEmpty = resetField({ field: email, fieldMessage: emailMessage });
+  if (isEmailEmpty) return;
 
   const emailPattern = /^[a-zA-Z0-9]{4,}@(gmail|yahoo|hotmail).com$/;
 
   const isEmailValid = emailPattern.test(email.value)
   
   let validityState
-
-  if(isEmailValid && email.validity.valid){
-    emailMessage.value = "✓";
-    validityState = 'valid'
-  } else if(!isEmailValid && !email.validity.valid){
-    emailMessage.value = 'Incorrect email'
-    validityState = 'invalid'
-  }
-
+  
+  validateClientAndServerState({field: email, isFieldValid: isEmailValid, fieldMessage: 'Incorrect email'})
+  
   colorMessage({ msgToColor: emailMessage, validityState})
+  
 }
 
-function removeClassEmpty({ field }) {
-  if (field.value !== "" && field.classList.contains("empty")) {
-    field.classList.remove("empty");
-  }
+
+function validateName({name, nameMessage}){
+  removeClassEmpty({ field: name})
+  
+  const isNameEmpty =  resetField({ field: name, fieldMessage: nameMessage})
+  if(isNameEmpty) return
+
+  const pattern = /^[a-zA-Z]{1,}$/
+
+  const isNameValid = pattern.test(name.value)
+
+  validateClientAndServerState({field: name, isFieldValid: isNameValid, fieldMessage: nameMessage, msg: 'Incorrect name'})
 }
 
-function colorMessage({ msgToColor, validityState, field }) {
-  msgToColor.classList.add(validityState);
-
-  if (field) {
-    field.classList.add(validityState);
+  function removeClassEmpty({ field }) {
+    if (field.value !== "" && field.classList.contains("empty")) {
+      field.classList.remove("empty");
+    }
+  }
+  
+  function colorMessage({ msgToColor, validityState, field }) {
+    msgToColor.classList.add(validityState);
+  
+    if (field) {
+      field.classList.add(validityState);
+    }
+  
+    validityState = validityState === "valid" ? "invalid" : "valid";
+  
+    msgToColor.classList.remove(validityState);
+  
+    if (field) {
+      field.classList.remove(validityState);
+    }
   }
 
-  validityState = validityState === "valid" ? "invalid" : "valid";
+  function resetField({field, fieldMessage}){
+     if(field.value !== '') return
 
-  msgToColor.classList.remove(validityState);
+     fieldMessage.value = "";
+     field.classList.remove("invalid", "valid");
+     field.classList.add('empty')
 
-  if (field) {
-    field.classList.remove(validityState);
+     return true
   }
-}
+
+  function validateClientAndServerState({ field, isFieldValid, fieldMessage, msg, isReturn, field2 }) {
+    let message, validityState;
+
+    if (!field.validity.valid && !isFieldValid) {
+
+      message = msg;
+      validityState = "invalid";
+
+    } else if (field.validity.valid && isFieldValid) {
+     
+      message = "✓";
+      validityState =  "valid";
+
+    }
+
+    message ? fieldMessage.textContent = message : fieldMessage.textContent;
+
+    colorMessage({ msgToColor: fieldMessage, validityState, field: field2 });
+
+    if(validityState === 'invalid' && isReturn){
+      return true
+    }
+  }

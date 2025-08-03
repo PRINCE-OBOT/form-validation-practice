@@ -16,12 +16,14 @@
    
     <div class="first-name">
       <label for="first-name">First Name</label>
-      <input type="text" id="first-name" placeholder="First name">
+      <input type="text" id="first-name" placeholder="First name" pattern="^[a-zA-Z]{1,}$" required>
+      <output id="first-name-message"class="show-message"></output>
     </div>
     
     <div class="last-name">
       <label for="last-name">Last Name</label>
-      <input type="text" id="last-name"placeholder="Last name">
+      <input type="text" id="last-name"placeholder="Last name" pattern="^[a-zA-Z]{1,}$" required>
+      <output id="last-name-message"class="show-message"></output>
     </div>
     
     <div class="email">
@@ -55,7 +57,7 @@
     
     <div class="confirm-password">
       <label for="cofirm-password">Confirm Password</label>
-      <input type="text" id="confirm-password" placeholder="Confirm Password">
+      <input type="text" id="confirm-password" placeholder="Confirm Password" required>
       <output id="confirm-password-message" class="show-message"></output>
     </div>
     
