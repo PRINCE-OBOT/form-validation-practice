@@ -2,7 +2,9 @@
     const postalCode = document.querySelector('#postal-code')
     const postalCodeMessage = document.querySelector('#postal-code-message')
     const password = document.querySelector('#password')
+    const confirmPassword = document.querySelector("#confirm-password");
     const passwordMessage = document.querySelector('#password-message')
+    const confirmPasswordMessage = document.querySelector('#confirm-password-message')
     const inputs = document.querySelectorAll('input')
 
     inputs.forEach(markInputAsEmpty)
@@ -17,6 +19,8 @@
     
     password.addEventListener('input', validatePassword)
 
+    confirmPassword.addEventListener('input', confirmPasswordToValidatePassword)
+
     const countryPostalCode = {
       nigeria: ['^[0-9]{6}$',
         'Nigeria'],
@@ -29,58 +33,67 @@
       null: ['']
     }
 
-    let countryPostalCodepattern, countryPostalCodepatternRegExp
+    let countryPostalCodePattern, countryPostalCodePatternRegExp
     function handleCountryPostalCode() {
-      countryPostalCodepattern = countryPostalCode[country.value][0]
+      countryPostalCodePattern = countryPostalCode[country.value][0]
 
-      if (countryPostalCodepattern === '') {
+      if (countryPostalCodePattern === '') {
         postalCodeMessage.textContent = 'You have not selected a country code'
-        postalCodeMessage.classList.remove('valid', 'invalid')
-        postalCodeMessage.classList.add('void')
+        postalCodeMessage.classList.remove('valid')
+        postalCodeMessage.classList.add('invalid')
         postalCode.classList.add('empty')
         return
       }
       
-     countryPostalCodepatternRegExp = new RegExp(countryPostalCodepattern)
+     countryPostalCodePatternRegExp = new RegExp(countryPostalCodePattern)
 
       setCountryPatternToPostalCode()
       validatePostalCode()
     }
 
     function setCountryPatternToPostalCode() {
-      postalCode.setAttribute('pattern', countryPostalCodepattern)
+      postalCode.setAttribute('pattern', countryPostalCodePattern)
     }
 
-    function validatePostalCode() {
+    function validatePostalCode(e) {
       if (postalCode.value === '') {
         postalCodeMessage.textContent = ''
         postalCode.classList.add('empty')
+
+        if(e){
+          // Avoid selecting a country to call `handleCountryPostalCode` recursively
+          // Only run `handleCountryPostalCode` when the event is handled by `validatePostalCode` function
+          handleCountryPostalCode()
+        }
+        return
+      }
+      if(countryPostalCodePattern === ''){
         return
       }
       postalCode.classList.remove('empty')
        
-       const isPostalCodeValid = countryPostalCodepatternRegExp.test(postalCode.value)
+       const isPostalCodeValid = countryPostalCodePatternRegExp.test(postalCode.value)
 
       let message,
       validityState
       if (!postalCode.validity.valid && !isPostalCodeValid) {
+      
         message = `Invalid Postal Code`
         validityState = 'invalid'
+        
       } else if (postalCode.validity.valid && isPostalCodeValid) {
+       
         message = '✓'
         validityState = 'valid'
+        
       }
 
       postalCodeMessage.textContent = message
-      postalCodeMessage.classList.add(validityState)
 
-      validityState = validityState === 'valid' ? 'invalid': 'valid'
-
-      postalCodeMessage.classList.remove(validityState, 'void')
+      colorMessage({msgToColor: postalCodeMessage, validityState})
     }
-    
-   
-    
+
+    let isPasswordStrong
     function validatePassword(){
      if(password.value !== ''){
         password.classList.remove('empty')
@@ -106,15 +119,56 @@
       passwordMessage.value += ', Minimum of 7 characters'
     }
     
-  const isPasswordStrong = lowercase && uppercase && number && minLength
+  isPasswordStrong = lowercase && uppercase && number && minLength
   
+  let validityState
     if(isPasswordStrong && password.validity.valid){
       passwordMessage.value = '✓'
+      validityState = 'valid'
+      
+    } else if(!isPasswordStrong && !password.validity.valid){
+      validityState = 'invalid'
     }
+
+    colorMessage({ msgToColor: passwordMessage, validityState })
     
     if(password.value === ''){
       passwordMessage.value = ''
     }  
      
+  }
+
+  function confirmPasswordToValidatePassword(e){
+    if(!isPasswordStrong && !password.validity.valid) return
+
+    let validityState;
+
+    if (password.value === e.target.value) {
+      confirmPasswordMessage.value = "✓";
+      validityState = "valid";
+      
+    } else if (password.value !== e.target.value) {
+      validityState = "invalid";
+      confirmPasswordMessage.value = 'Password Mismatch'
+    }
+
+    colorMessage({ msgToColor: confirmPasswordMessage, validityState, field: e.target });
+  }
+
+  function colorMessage({ msgToColor, validityState, field }) {
+    msgToColor.classList.add(validityState);
+
+    if(field){
+      field.classList.add(validityState)
+    }
+    
+    validityState = validityState === "valid" ? "invalid" : "valid";
+
+    msgToColor.classList.remove(validityState);
+
+    if(field){
+      field.classList.remove(validityState)
+    }
+
   }
 
