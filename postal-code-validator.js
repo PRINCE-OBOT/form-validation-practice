@@ -56,6 +56,8 @@ export default class PostalCodeValidator {
       this.postalCodeMessage.classList.remove("valid");
       this.postalCodeMessage.classList.add("invalid");
       this.postalCode.classList.add("empty");
+
+      this.#setCountryDetailsToPostalCode()
       return;
     }
 
