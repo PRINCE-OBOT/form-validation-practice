@@ -1,9 +1,10 @@
 export default class FormValidator {
-  constructor({ buttonSubmit, messages, inputs, displayFeedback }) {
+  constructor({ buttonSubmit, messages, inputs, displayFeedback, closeFeedback }) {
     this.buttonSubmit = buttonSubmit;
     this.messages = messages;
     this.inputs = inputs;
     this.displayFeedback = displayFeedback;
+    this.closeFeedback = displayFeedback;
     this.bindEvent = this.#render();
   }
 
@@ -13,6 +14,14 @@ export default class FormValidator {
 
   #bindEvent() {
     this.buttonSubmit.addEventListener("click", this.#customCheckValidity.bind(this));
+
+    this.closeFeedback.addEventListener('click', this.#closeFormFeedback.bind(this))
+  }
+
+  #closeFormFeedback(e){
+    if(!e.target.dataset.close) return
+
+    this.displayFeedback.close()
   }
 
   #customCheckValidity() {

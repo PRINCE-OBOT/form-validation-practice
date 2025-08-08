@@ -43,6 +43,9 @@ new NameValidator({ name: firstName, nameMessage: firstNameMessage})
 
 new NameValidator({ name: lastName, nameMessage: lastNameMessage})
 
-new FormValidator({ buttonSubmit: btnSubmit, messages: messages, inputs: inputs, displayFeedback: displayFormFeedback })
-
-closeFormFeedback.addEventListener('click', ()=> displayFormFeedback.close())
+new FormValidator({
+  buttonSubmit: btnSubmit,
+  messages: messages,
+  inputs: inputs,
+  displayFeedback: displayFormFeedback,
+  closeFeedback: closeFormFeedback});
