@@ -36,7 +36,7 @@ body {
   margin: 0 auto 0;
   display: grid;
   height: calc-size(max-content, size + 100px);
-  padding-top: 30px;
+  padding-top: 5px;
 }
 
 input {
@@ -95,7 +95,7 @@ input {
   color: var(--clr-pri-accent);
   grid-column: 1 / -1;
   border-radius: var(--br-sm);
-  padding: 30px 0;
+  padding: 35px 0;
 }
 
 form {
