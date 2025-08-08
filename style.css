@@ -133,10 +133,15 @@ input {
   }
 }
 
+.password, .confirm-password{
+  margin-top: 10px;
+}
+
 .email {
   grid-column: 1/-1;
 }
 .btn-submit {
+  margin-top: 20px;
   max-width: 120px;
   padding: 10px;
   border-radius: 5px;
@@ -145,4 +150,44 @@ input {
   font-weight: 700;
   border: none;
   box-shadow: var(--box-shadow-transparent);
+  cursor: pointer;
+}
+.display-form-feedback{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  
+  &::backdrop{
+    backdrop-filter: blur(3px);
+  }
+}
+.display-form-feedback-content{
+  min-height: 100px;
+  min-width: 100px;
+  border-radius: var(--br-sm);
+  box-shadow: var(--box-shadow-transparent);
+  background-color: var(--clr-valid);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.html-entity{
+  font-size: clamp(var(--fs-md), var(--fs-md) + 0.3vw, var(--fs-lg));
+}
+.feedback{
+  text-align: center;
+  color: var(--clr-sec-accent);
+  font-weight: 900;
+}
+.close-form-feedback{
+  position: absolute;
+  font-weight: 900;
+  color: var(--clr-text);
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 }

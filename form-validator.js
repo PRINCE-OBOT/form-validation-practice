@@ -1,8 +1,9 @@
 export default class FormValidator {
-  constructor({ buttonSubmit, messages, inputs }) {
+  constructor({ buttonSubmit, messages, inputs, displayFeedback }) {
     this.buttonSubmit = buttonSubmit;
     this.messages = messages;
     this.inputs = inputs;
+    this.displayFeedback = displayFeedback;
     this.bindEvent = this.#render();
   }
 
@@ -24,7 +25,7 @@ export default class FormValidator {
     );
 
     if (isEveryMessageValid && isEveryInputValid) {
-      alert("gotcha");
+      this.displayFeedback.showModal()
     } else {
       const invalidInputs = [...this.inputs].filter(
         (input) => !input.validity.valid

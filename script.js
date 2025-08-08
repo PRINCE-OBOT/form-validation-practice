@@ -21,6 +21,9 @@ const confirmPasswordMessage = document.querySelector(
   "#confirm-password-message"
 );
 
+const displayFormFeedback = document.querySelector(".display-form-feedback");
+const closeFormFeedback = document.querySelector(".close-form-feedback");
+
 const email = document.querySelector("#email");
 const emailMessage = document.querySelector("#email-message");
 
@@ -40,4 +43,6 @@ new NameValidator({ name: firstName, nameMessage: firstNameMessage})
 
 new NameValidator({ name: lastName, nameMessage: lastNameMessage})
 
-new FormValidator({ buttonSubmit: btnSubmit, messages: messages, inputs: inputs })
+new FormValidator({ buttonSubmit: btnSubmit, messages: messages, inputs: inputs, displayFeedback: displayFormFeedback })
+
+closeFormFeedback.addEventListener('click', ()=> displayFormFeedback.close())
