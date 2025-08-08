@@ -34,7 +34,10 @@ export default class FormValidator {
     );
 
     if (isEveryMessageValid && isEveryInputValid) {
+     
+       window.scrollTo(0, 0)
       this.displayFeedback.showModal()
+   
     } else {
       const invalidInputs = [...this.inputs].filter(
         (input) => !input.validity.valid
