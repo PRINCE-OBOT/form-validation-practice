@@ -12,8 +12,10 @@ export default class Email{
     }
     
     #validateEmail() {
-      FormValidator.removeClassEmpty({ field: this.email });
-    
+      FormValidator.hasUserInteract({ field: this.email})
+      
+      FormValidator.removeInvalidHighlightFromInput({ field: this.email });
+      
       const emailField = FormValidator.resetFieldStyle({
         field: this.email,
         fieldMessage: this.emailMessage,
@@ -24,8 +26,6 @@ export default class Email{
     
       const isEmailValid = emailPattern.test(this.email.value);
     
-      let validityState;
-    
       FormValidator.validateClientAndServerState({
         field: this.email,
         isFieldValid: isEmailValid,
@@ -33,6 +33,5 @@ export default class Email{
         msg: "Incorrect email",
       });
     
-      FormValidator.colorCustomMessage({ msgToColor: this.emailMessage, validityState });
     }
 }

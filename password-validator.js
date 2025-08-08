@@ -1,13 +1,12 @@
 import FormValidator from "./form-validator.js"
 
-const formValidator = new FormValidator()
-
 export default class Password{
   constructor({password, passwordMessage, confirmPassword, confirmPasswordMessage}){
     this.password = password
     this.passwordMessage = passwordMessage
     this.confirmPassword = confirmPassword
     this.confirmPasswordMessage = confirmPasswordMessage
+    this.isPasswordValid = null
     this.bindEvent = this.#bindEvent()
   }
 
@@ -18,8 +17,10 @@ export default class Password{
   }
 
   #validatePassword() {
-    FormValidator.removeClassEmpty({ field: this.password });
-  
+    FormValidator.hasUserInteract({ field: this.password})
+    
+    FormValidator.removeInvalidHighlightFromInput({ field: this.password });
+    
     const passwordField = FormValidator.resetFieldStyle({
       field: this.password,
       fieldMessage: this.passwordMessage,
@@ -46,11 +47,11 @@ export default class Password{
       this.passwordMessage.value += ", Minimum of 7 characters";
     }
   
-    formValidator.isPasswordValid = lowercase && uppercase && number && minLength;
+    this.isPasswordValid = lowercase && uppercase && number && minLength;
   
     FormValidator.validateClientAndServerState({
       field: this.password,
-      isFieldValid: formValidator.isPasswordValid,
+      isFieldValid: this.isPasswordValid,
       fieldMessage: this.passwordMessage,
     });
   
@@ -60,8 +61,12 @@ export default class Password{
   }
   
   #confirmPasswordToValidatePassword() {
-    FormValidator.removeClassEmpty({ field: this.confirmPassword });
-  
+    FormValidator.hasUserInteract({ field: this.confirmPassword})
+    
+    FormValidator.removeInvalidHighlightFromInput({
+      field: this.confirmPassword,
+    });
+    
     const confirmPasswordField = FormValidator.resetFieldStyle({
       field: this.confirmPassword,
       fieldMessage: this.confirmPasswordMessage,
@@ -70,7 +75,7 @@ export default class Password{
   
     const passwordStatus = FormValidator.validateClientAndServerState({
       field: this.password,
-      isFieldValid: formValidator.isPasswordValid,
+      isFieldValid: this.isPasswordValid,
       fieldMessage: this.confirmPasswordMessage,
       field2: this.confirmPassword,
       msg: "Your password is weak",

@@ -5,7 +5,7 @@
   --clr-sec-accent: #e4ede5;
   --clr-pri-accent: #052d0a;
   --clr-transparent: rgba(0 0 0 / 0.4);
-  --clr-text: #333;
+  --clr-text: #181818;
 
   --md-dim: 50px;
   --fs-xsm: 0.8rem;
@@ -18,6 +18,8 @@
   --sm-gap: 5px;
 
   --box-shadow-transparent: 0 0 5px var(--clr-transparent);
+
+  --br-sm: 5px;
 }
 *,
 *::before,
@@ -34,28 +36,38 @@ body {
   margin: 0 auto 0;
   display: grid;
   height: calc-size(max-content, size + 100px);
+  padding-top: 30px;
 }
 
 input {
-  &[type].empty {
-    border-color: var(--clr-transparent);
-  }
   &:where(:invalid, :valid) {
     border: 2px solid;
+    border-color: var(--clr-transparent);
   }
-  &:invalid {
+
+  &.user-interact:invalid {
     border-color: var(--clr-invalid);
   }
 
-  &:valid {
+  &.user-interact:valid {
     border-color: var(--clr-valid);
+  }
+  &.invalid {
+    border-color: var(--clr-invalid);
   }
 }
 :focus {
   outline: none;
 }
-
 .show-message {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  font-size: clamp(var(--fs-xxsm), var(--fs-xxsm) + 0.8vw, var(--fs-sm));
+  font-style: italic;
+
   &.invalid {
     color: var(--clr-invalid);
   }
@@ -81,6 +93,9 @@ input {
   background: var(--clr-sec-accent);
   font-size: clamp(var(--fs-sm), var(--fs-sm) + 1vw, var(--fs-md));
   color: var(--clr-pri-accent);
+  grid-column: 1 / -1;
+  border-radius: var(--br-sm);
+  padding: 30px 0;
 }
 
 form {
@@ -91,7 +106,9 @@ form {
   );
   gap: 20px;
   color: var(--clr-text);
-  padding: 10px;
+  padding: 20px;
+  box-shadow: var(--box-shadow-transparent);
+  border-radius: var(--br-sm);
 }
 
 form > div {
@@ -119,12 +136,13 @@ input {
 .email {
   grid-column: 1/-1;
 }
-.show-message {
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  transform: translateY(100%);
-  font-size: clamp(var(--fs-xxsm), var(--fs-xxsm) + 0.8vw, var(--fs-sm));
-  font-style: italic;
+.btn-submit {
+  max-width: 120px;
+  padding: 10px;
+  border-radius: 5px;
+  background: var(--clr-pri-accent);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  box-shadow: var(--box-shadow-transparent);
 }

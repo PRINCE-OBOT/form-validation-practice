@@ -1,7 +1,9 @@
 import FormValidator from "./form-validator.js";
 
 export default class PostalCodeValidator {
-  constructor({ country, postalCode, postalCodeMessage }) {
+  constructor({
+    country, postalCode, postalCodeMessage
+  }) {
     this.country = country
     this.postalCode = postalCode
     this.postalCodeMessage = postalCodeMessage
@@ -17,12 +19,12 @@ export default class PostalCodeValidator {
     this.#bindEvent()
   }
 
-  #bindEvent(){
+  #bindEvent() {
     this.country.addEventListener("change", this.#handleCountryPostalCode.bind(this));
 
     this.postalCode.addEventListener("input", this.#validatePostalCode.bind(this));
   }
-  
+
   #countryDetails() {
     return {
       nigeria: {
@@ -73,6 +75,14 @@ export default class PostalCodeValidator {
   }
 
   #validatePostalCode(e) {
+    FormValidator.hasUserInteract({
+      field: this.postalCode
+    })
+    
+    FormValidator.removeInvalidHighlightFromInput({
+      field: this.postalCode,
+    });
+
     const postalCodeField = FormValidator.resetFieldStyle({
       field: this.postalCode,
       fieldMessage: this.postalCodeMessage,
@@ -88,10 +98,10 @@ export default class PostalCodeValidator {
       return;
     }
 
-    FormValidator.removeClassEmpty({ field: this.postalCode });
-
     const isPostalCodeValid = this.countryPostalCodePatternRegExp.test(this.postalCode.value);
 
-    FormValidator.validateClientAndServerState({field: this.postalCode,isFieldValid: isPostalCodeValid,fieldMessage: this.postalCodeMessage,msg: "Invalid Postal Code",});
+    FormValidator.validateClientAndServerState({
+      field: this.postalCode, isFieldValid: isPostalCodeValid, fieldMessage: this.postalCodeMessage, msg: "Invalid Postal Code",
+    });
   }
 }
