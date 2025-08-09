@@ -4,7 +4,7 @@ export default class FormValidator {
     this.messages = messages;
     this.inputs = inputs;
     this.displayFeedback = displayFeedback;
-    this.closeFeedback = displayFeedback;
+    this.closeFeedback = closeFeedback;
     this.bindEvent = this.#render();
   }
 
@@ -19,8 +19,6 @@ export default class FormValidator {
   }
 
   #closeFormFeedback(e){
-  //  if(!e.target.dataset.close) return
-
     this.displayFeedback.close()
   }
 

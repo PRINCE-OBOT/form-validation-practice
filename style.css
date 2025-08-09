@@ -143,7 +143,7 @@ input {
 .btn-submit {
   margin-top: 20px;
   max-width: 120px;
-  padding: 10px;
+  padding: 12px;
   border-radius: 5px;
   background: var(--clr-pri-accent);
   color: #fff;
@@ -175,7 +175,7 @@ input {
   align-items: center;
   padding: 20px;
 }
-.html-entity{
+.thumbs-up{
   font-size: clamp(var(--fs-md), var(--fs-md) + 0.3vw, var(--fs-lg));
 }
 .feedback{
