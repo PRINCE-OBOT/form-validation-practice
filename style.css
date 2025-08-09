@@ -40,7 +40,7 @@ body {
 }
 
 input {
-  &:where(:invalid, :valid) {
+  &: where(: invalid,: valid) {
     border: 2px solid;
     border-color: var(--clr-transparent);
   }
@@ -101,8 +101,8 @@ input {
 form {
   display: grid;
   grid-template-columns: repeat(
-    auto-fit,
-    minmax(calc(var(--container-width) / 2.2 - var(--sm-gap)), 1fr)
+  auto-fit,
+  minmax(calc(var(--container-width) / 2.2 - var(--sm-gap)), 1fr)
   );
   gap: 20px;
   color: var(--clr-text);
@@ -133,7 +133,7 @@ input {
   }
 }
 
-.password, .confirm-password{
+.password, .confirm-password {
   margin-top: 10px;
 }
 
@@ -152,18 +152,18 @@ input {
   box-shadow: var(--box-shadow-transparent);
   cursor: pointer;
 }
-.display-form-feedback{
+.display-form-feedback {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   border: none;
-  
-  &::backdrop{
+
+  &::backdrop {
     backdrop-filter: blur(3px);
   }
 }
-.display-form-feedback-content{
+.display-form-feedback-content {
   min-height: 100px;
   min-width: 100px;
   border-radius: var(--br-sm);
@@ -175,20 +175,22 @@ input {
   align-items: center;
   padding: 20px;
 }
-.thumbs-up{
+.thumbs-up {
   font-size: clamp(var(--fs-md), var(--fs-md) + 0.3vw, var(--fs-lg));
 }
-.feedback{
+.feedback {
   text-align: center;
   color: var(--clr-sec-accent);
   font-weight: 900;
 }
-.close-form-feedback{
+.close-form-feedback {
   position: absolute;
   font-weight: 900;
   color: var(--clr-text);
   top: 10px;
   right: 10px;
   cursor: pointer;
-  outline: 2px solid pink;
+  &:hover {
+    outline: 2px solid var(--clr-transparent);
+  }
 }
