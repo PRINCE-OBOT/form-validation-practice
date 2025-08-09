@@ -19,7 +19,7 @@ export default class FormValidator {
   }
 
   #closeFormFeedback(e){
-    if(!e.target.dataset.close) return
+  //  if(!e.target.dataset.close) return
 
     this.displayFeedback.close()
   }
